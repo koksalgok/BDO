@@ -3,71 +3,90 @@
 
 class GameDevelopmentProcess {
 public:
-    void start() {
-        std::cout << "1. Yeni oyun fikri ortaya atıldı.\n";
-        defineConcept();
-        developPrototype();
-        testPrototype();
-        createArtAssets();
-        detectAndFixBugs();
-        promoteGame();
-    }
+	int state = 1;
+	void start() {
+		state = 1;
+		while (state > 0 && state <= 10) {
+			switch (state) {
+			case 1:
+				std::cout << "1. Yeni oyun fikri ortaya atildi.\n";
+				state = 2;
+				break;
+			case 2: defineConcept(); break;
+			case 3: developPrototype(); break;
+			case 4: testPrototype(); break;
+			case 5: createCharacters(); break;
+			case 6: createArtAssets(); break;
+			case 7: detectBugs(); break;
+			case 8: fixBugs(); break;
+			case 9: promoteGame(); break;
+			case 10: marketing(); break;
+			default: state = -1;
+			}
+		}
+		
+	}
 
 private:
-    void defineConcept() {
-        std::cout << "2. Oyun konsepti belirleniyor...\n";
-        while (!getUserApproval("Konsept onaylandı mı? (1=Evet, 0=Hayır): ")) {
-            std::cout << "Konsept reddedildi. Tekrar konsept geliştiriliyor...\n";
-        }
-    }
+	void defineConcept() {
+		std::cout << "2. Oyun konsepti belirleniyor...\n";
+		if (!getUserApproval("Konsept onaylandi mi? (1=Evet, 0=Hayir): ")) {
+			std::cout << "Konsept reddedildi. Tekrar konsept gelistiriliyor...\n";
+		}
+		else state = 3;
+	}
 
-    void developPrototype() {
-        std::cout << "3. Prototip geliştiriliyor...\n";
-    }
+	void developPrototype() {
+		std::cout << "3. Prototip gelistiriliyor...\n";
+		state = 4;
+	}
 
-    void testPrototype() {
-        std::cout << "4. Prototip test ediliyor...\n";
-        while (!getUserApproval("Prototip testinden geçti mi? (1=Evet, 0=Hayır): ")) {
-            std::cout << "Test başarısız. Prototip tekrar geliştiriliyor...\n";
-            developPrototype(); 
-            std::cout << "Yeni prototip yeniden test ediliyor...\n";
-        }
-    }
+	void testPrototype() {
+		std::cout << "4. Prototip test ediliyor...\n";
+		if (!getUserApproval("Prototip testinden gecti mi? (1=Evet, 0=Hayir): ")) {
+			std::cout << "Test basarisiz. Prototip tekrar gelistirilecek...\n";
+			state = 3;
+		}
+		else state = 5;
+	}
 
-    void createArtAssets() {
-        do {
-            std::cout << "5. Karakter ve ortam tasarımı yapılıyor...\n";
-            std::cout << "6. Animasyon ve efektler ekleniyor...\n";
-        } while (!getUserApproval("Sanatsal içerik testi başarılı mı? (1=Evet, 0=Hayır): "));
-    }
+	void createCharacters() {
+		std::cout << "5. Karakter ve ortam tasarimi yapiliyor...\n"; state = 6;
+	}void createArtAssets() {
+		std::cout << "6. Animasyon ve efektler ekleniyor...\n";
+		if (!getUserApproval("Sanatsal içerik testi basarili mi? (1=Evet, 0=Hayir): ")) state = 5;
+		else state = 7;
+	}
 
-    void detectAndFixBugs() {
-        bool needsBugFixing;
-        do {
-            std::cout << "7. Hatalar tespit ediliyor...\n";
-            needsBugFixing = getUserApproval("Hata bulundu mu? (1=Evet, 0=Hayır): ");
-            if (needsBugFixing) {
-                std::cout << "8. Hatalar ayıklanıyor...\n";
-            }
-        } while (needsBugFixing);
-    }
+	void detectBugs() {
+		std::cout << "7. Hatalar tespit ediliyor...\n";
+		if (getUserApproval("Hata bulundu mu? (1=Evet, 0=Hayir): ")) state = 8;
+		else state = 9;
+	}
+	void fixBugs() {
+		std::cout << "8. Hatalar ayiklaniyor...\n"; state = 7;
+	}
 
-    void promoteGame() {
-        std::cout << "9. Oyun tanıtımı yapılıyor...\n";
-        std::cout << "10. Pazarlama kampanyası başlatılıyor...\n";
-        std::cout << "🎉 Oyun başarıyla piyasaya sürüldü!\n";
-    }
+	void promoteGame() {
+		std::cout << "9. Oyun tanitimi yapiliyor...\n"; state = 10;
+	}
 
-    bool getUserApproval(const std::string& question) {
-        int input;
-        std::cout << question;
-        std::cin >> input;
-        return input == 1;
-    }
+	void marketing() {
+		std::cout << "10. Pazarlama kampanyasi baslatiliyor...\n";
+		std::cout << "🎉 Oyun basariyla piyasaya suruldu!\n";
+		state = 100;
+	}
+
+	bool getUserApproval(const std::string& question) {
+		int input;
+		std::cout << question;
+		std::cin >> input;
+		return input == 1;
+	}
 };
 
 int main() {
-    GameDevelopmentProcess process;
-    process.start();
-    return 0;
+	GameDevelopmentProcess process;
+	process.start();
+	return 0;
 }
