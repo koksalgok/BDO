@@ -1,31 +1,37 @@
 // @File	BPMN-ProcessValidation.cpp
 // @Author	YUSUF GÖÇ(yusufsalih987@gmail.com), KOKSAL GOK(koksal_gok@msn.com)
-// @Date	2025-04-28
+// @Date	2025-04-30
 // BPMN proje süreç doğrulama programı.
 #include <iostream>
 #include <string>
+#include <chrono>
+#include <thread>
 using namespace std;
 
 class GameDevelopmentProcess {
 public:
 	int state = 1;
 	char str2test[100];
+	char statepos[100];
 	int pos = 0;
 
 	void start() {
 		state = 1;
+		statepos[0] = 0;
+
 		cout << "Test edilecek cumleyi giriniz. " << endl;
 		cin >> str2test;
 		while (str2test[pos] || state == 9) {
+			cout << endl << "Islenen giris:" << statepos << endl;
 			dojob();
 			if (state >= 10) break;
-		}
-		cout << endl << endl << "Son state:" << state << endl;
-		cout << "Test sonucu:" << endl << "string " << str2test;
+		} 
+		cout << endl << endl << "Son durum:" << state << endl;
+		cout << "Test sonucu:" << endl << str2test << " cumlesi ";
 		if (state >= 10) {
-			cout << " is in the language" << endl;
+			cout << " kabul edildi." << endl;
 		}
-		else cout << " is not in the language" << endl;
+		else cout << " kabul edilmedi." << endl;
 	}
 
 private:
@@ -93,14 +99,21 @@ private:
 	}
 
 	bool getUserApproval(const std::string& question) {
-		cout << question << endl;
+		//int input;
+		//std::cin >> input;
+		std::chrono::seconds dura(5);
+		std::this_thread::sleep_for(dura);
+
 		char input;
-		input = str2test[pos++];
+		input = str2test[pos];
+		statepos[pos] = input;
+		statepos[pos+1] = 0;
+		cout << question << endl << "Cevap:";
+		pos++;
 		if (input == '1') cout << "Evet";
 		else cout << "Hayir";
 		cout << endl;
-		//int input;
-		//std::cin >> input;
+		
 		return input == '1';
 	}
 };
